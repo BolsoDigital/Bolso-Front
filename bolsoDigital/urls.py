@@ -5,8 +5,5 @@ app_name = 'bolsoDigital'
 
 urlpatterns = [
     # Adicione suas rotas aqui
-    # Exemplo:
-    # path('', views.index, name='index'),
-    # path('expenses/', views.expenses, name='expenses'),
-    # path('income/', views.income, name='income'),
+    path('expenses/', views.expenses_list, name='expenses_list'),
 ]
