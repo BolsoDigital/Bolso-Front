@@ -20,6 +20,12 @@
     </style>
 </head>
 <body>
+    <h2 style="text-align:center;">Enviar Comprovante</h2>
+    <form method="POST" enctype="multipart/form-data" action="{% url 'bolsoDigital:upload_payment' %}">
+        {% csrf_token %}
+        <input type="file" name="file" accept="image/*" required>
+        <button type="submit">Enviar</button>
+    </form>
     <h1 style="text-align:center;">Lista de Pagamentos</h1>
     <table>
         <thead>
