@@ -1,9 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import Expenses
 
-def index(request):
-    return HttpResponse("Bolso Digital funcionando!")
-
-# Adicione suas views aqui
-# def expenses(request):
-#     return render(request, 'bolsoDigital/expenses.html')
+def expenses_list(request):
+    expenses = Expenses.objects.all()
+    return render(request, 'expenses_list.html', {'expenses': expenses})
