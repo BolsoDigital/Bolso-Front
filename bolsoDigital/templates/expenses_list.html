@@ -36,6 +36,7 @@
                 <th>Usuário</th>
                 <th>Método de Pagamento</th>
                 <th>Data</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -46,11 +47,17 @@
                     <td>{{ expense.id_category.name }}</td>
                     <td>{{ expense.id_user.name }}</td>
                     <td>{{ expense.payment_method }}</td>
-                    <td>{{ expense.update_at|date:"d/m/Y H:i" }}</td>
+                    <td>{{ expense.update_at|date:"d/m/Y H:i" }}</td>                    
+                    <td>
+                        <a href="{% url 'bolsoDigital:delete_payment' expense.id %}"
+                        onclick="return confirm('Tem certeza que deseja excluir este pagamento?');">
+                        🗑️ Deletar
+                        </a>
+                    </td>                    
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="6">Nenhum pagamento encontrado.</td>
+                    <td colspan="7">Nenhum pagamento encontrado.</td>
                 </tr>
             {% endfor %}
         </tbody>
