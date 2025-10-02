@@ -23,10 +23,6 @@ def upload_payment(request):
             messages.error(request, f"Ocorreu um erro: {e}")
     return redirect('bolsoDigital:expenses_list')
 
-import requests
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import Expenses
 
 def expenses_list(request):
     expenses = Expenses.objects.all()
