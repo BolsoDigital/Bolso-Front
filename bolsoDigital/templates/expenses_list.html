@@ -1,32 +1,104 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Pagamentos</title>
-    <style>
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
+{% extends "base.html" %}
+
+{% block title %}Lista de Pagamentos{% endblock %}
+
+{% block content %}
+<style>
+    .expenses-container {
+        width: 90%;
+        max-width: 1000px;
+        margin: 30px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .expenses-container h2,
+    .expenses-container h1 {
+        text-align: center;
+        color: #0096c7;
+        margin-bottom: 20px;
+    }
+
+    .expenses-container form {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .expenses-container input[type="file"] {
+        padding: 5px;
+        margin-right: 10px;
+    }
+
+    .expenses-container button {
+        background-color: #0096c7;
+        color: #fff;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .expenses-container button:hover {
+        background-color: #0077a3;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #0096c7;
+        color: #fff;
+    }
+
+    tr:hover {
+        background-color: #f2f9fc;
+    }
+
+    a.delete-link {
+        color: #e63946;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    a.delete-link:hover {
+        color: #a4161a;
+    }
+
+    @media (max-width: 768px) {
+        .expenses-container {
+            width: 95%;
+            padding: 15px;
         }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
+
+        table, th, td {
+            font-size: 14px;
         }
-        th {
-            background: #f2f2f2;
-        }
-    </style>
-</head>
-<body>
-    <h2 style="text-align:center;">Enviar Comprovante</h2>
+    }
+</style>
+
+<div class="expenses-container">
+    <h2>Enviar Comprovante</h2>
     <form method="POST" enctype="multipart/form-data" action="{% url 'bolsoDigital:upload_payment' %}">
         {% csrf_token %}
         <input type="file" name="file" accept="image/*" required>
         <button type="submit">Enviar</button>
     </form>
-    <h1 style="text-align:center;">Lista de Pagamentos</h1>
+
+    <h1>Lista de Pagamentos</h1>
+
     <table>
         <thead>
             <tr>
@@ -47,13 +119,14 @@
                     <td>{{ expense.id_category.name }}</td>
                     <td>{{ expense.id_user.name }}</td>
                     <td>{{ expense.payment_method }}</td>
-                    <td>{{ expense.update_at|date:"d/m/Y H:i" }}</td>                    
+                    <td>{{ expense.update_at|date:"d/m/Y H:i" }}</td>
                     <td>
-                        <a href="{% url 'bolsoDigital:delete_payment' expense.id %}"
-                        onclick="return confirm('Tem certeza que deseja excluir este pagamento?');">
-                        🗑️ Deletar
+                        <a href="{% url 'bolsoDigital:delete_payment' expense.id %}" 
+                           onclick="return confirm('Tem certeza que deseja excluir este pagamento?');"
+                           class="delete-link">
+                           🗑️ Deletar
                         </a>
-                    </td>                    
+                    </td>
                 </tr>
             {% empty %}
                 <tr>
@@ -62,5 +135,5 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .login-container h2 {
+        text-align: center;
+        color: #0096c7;
+        margin-bottom: 25px;
+    }
+
+    .login-container form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .login-container label {
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .login-container input[type="text"]:focus,
+    .login-container input[type="password"]:focus {
+        border-color: #0096c7;
+        box-shadow: 0 0 5px rgba(0,150,199,0.3);
+        outline: none;
+    }
+
+    .login-container input[type="submit"] {
+        background-color: #0096c7;
+        color: #fff;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    .login-container input[type="submit"]:hover {
+        background-color: #0077a3;
+    }
+
+    .login-container .errors {
+        color: #e63946;
+        font-size: 14px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    @media (max-width: 500px) {
+        .login-container {
+            margin: 20px;
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="login-container">
+    <h2>Entrar</h2>
+
+    {% if login_form.non_field_errors %}
+        <div class="errors">
+            {% for error in login_form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in login_form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="errors">
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <input type="submit" value="Entrar">
+    </form>
+</div>
+
+{% endblock %}

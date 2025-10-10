@@ -40,7 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'bolsoDigital',
+    'accounts'
 ]
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'bolsoDigital:expenses_list'
+LOGOUT_REDIRECT_URL = 'login'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,7 +65,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['app/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
