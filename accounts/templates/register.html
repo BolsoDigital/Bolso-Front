@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Registrar{% endblock %}
+
+{% block content %}
+<style>
+    .register-container {
+        max-width: 450px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .register-container h2 {
+        text-align: center;
+        color: #0096c7;
+        margin-bottom: 25px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-group input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-group input:focus {
+        border-color: #0096c7;
+        box-shadow: 0 0 5px rgba(0,150,199,0.3);
+        outline: none;
+    }
+
+    .form-group .errors {
+        color: #e63946;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    input[type="submit"] {
+        background-color: #0096c7;
+        color: #fff;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0077a3;
+    }
+
+    @media (max-width: 500px) {
+        .register-container {
+            margin: 20px;
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="register-container">
+    <h2>Registrar Usuário</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ user_form.username.id_for_label }}">Usuário:</label>
+            {{ user_form.username }}
+            {% if user_form.username.errors %}
+                <div class="errors">
+                    {% for error in user_form.username.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ user_form.password1.id_for_label }}">Senha:</label>
+            {{ user_form.password1 }}
+            {% if user_form.password1.errors %}
+                <div class="errors">
+                    {% for error in user_form.password1.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ user_form.password2.id_for_label }}">Confirmação de senha:</label>
+            {{ user_form.password2 }}
+            {% if user_form.password2.errors %}
+                <div class="errors">
+                    {% for error in user_form.password2.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <input type="submit" value="Cadastrar">
+    </form>
+</div>
+{% endblock %}

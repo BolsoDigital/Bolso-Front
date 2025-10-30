@@ -1,12 +1,17 @@
 import requests
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Expenses
 
+
+@login_required(login_url='login')
 def expenses_list(request):
     expenses = Expenses.objects.all()
     return render(request, 'expenses_list.html', {'expenses': expenses})
 
+
+@login_required(login_url='login')
 def upload_payment(request):
     if request.method == "POST" and request.FILES.get('file'):
         file = request.FILES['file']
@@ -24,10 +29,7 @@ def upload_payment(request):
     return redirect('bolsoDigital:expenses_list')
 
 
-def expenses_list(request):
-    expenses = Expenses.objects.all()
-    return render(request, 'expenses_list.html', {'expenses': expenses})
-
+@login_required(login_url='login')
 def delete_payment(request, expense_id):
     try:
         response = requests.delete(
