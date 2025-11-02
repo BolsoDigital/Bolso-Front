@@ -7,7 +7,7 @@ from .models import Expenses
 
 @login_required(login_url='login')
 def expenses_list(request):
-    expenses = Expenses.objects.all()
+    expenses = Expenses.objects.filter(id_user=request.user.id)
     return render(request, 'expenses_list.html', {'expenses': expenses})
 
 
@@ -18,6 +18,7 @@ def upload_payment(request):
         try:
             response = requests.post(
                 "http://localhost:8000/ai/upload-payment/",
+                data={'id_user': request.user.id},
                 files={'image': (file.name, file.read(), file.content_type)}
             )
             if response.status_code == 200:
@@ -33,7 +34,7 @@ def upload_payment(request):
 def delete_payment(request, expense_id):
     try:
         response = requests.delete(
-            f"http://localhost:8000/ai/delete-payment/{expense_id}"
+            f"http://localhost:8000/ai/delete-payment/{expense_id}?id_user={request.user.id}"
         )
         if response.status_code == 200:
             messages.success(request, f"Pagamento {expense_id} deletado com sucesso!")
