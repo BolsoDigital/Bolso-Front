@@ -11,12 +11,14 @@
         background-color: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
     }
 
     .login-container h2 {
         text-align: center;
         color: #0096c7;
         margin-bottom: 25px;
+        transition: color 0.3s;
     }
 
     .login-container form {
@@ -28,6 +30,7 @@
         margin-bottom: 5px;
         font-weight: 600;
         color: #333;
+        transition: color 0.3s;
     }
 
     .login-container input[type="text"],
@@ -37,7 +40,7 @@
         border: 1px solid #ccc;
         border-radius: 6px;
         font-size: 16px;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, color 0.3s;
     }
 
     .login-container input[type="text"]:focus,
@@ -68,6 +71,47 @@
         font-size: 14px;
         margin-bottom: 10px;
         text-align: center;
+    }
+
+    /* ===== Tema escuro ===== */
+    body.dark-mode .login-container {
+        background-color: #1e1e1e;
+        color: #f5f5f5;
+        box-shadow: 0 4px 12px rgba(255,255,255,0.05);
+    }
+
+    body.dark-mode .login-container h2 {
+        color: #4cc9f0;
+    }
+
+    body.dark-mode .login-container label {
+        color: #ddd;
+    }
+
+    body.dark-mode .login-container input[type="text"],
+    body.dark-mode .login-container input[type="password"] {
+        background-color: #2a2a2a;
+        color: #f5f5f5;
+        border: 1px solid #555;
+    }
+
+    body.dark-mode .login-container input[type="text"]:focus,
+    body.dark-mode .login-container input[type="password"]:focus {
+        border-color: #4cc9f0;
+        box-shadow: 0 0 5px rgba(76,201,240,0.3);
+    }
+
+    body.dark-mode .login-container input[type="submit"] {
+        background-color: #4cc9f0;
+        color: #000;
+    }
+
+    body.dark-mode .login-container input[type="submit"]:hover {
+        background-color: #3a9ed4;
+    }
+
+    body.dark-mode .login-container .errors {
+        color: #ff6b6b;
     }
 
     @media (max-width: 500px) {
@@ -105,5 +149,4 @@
         <input type="submit" value="Entrar">
     </form>
 </div>
-
 {% endblock %}

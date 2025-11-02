@@ -11,12 +11,14 @@
         background-color: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
     }
 
     .register-container h2 {
         text-align: center;
         color: #0096c7;
         margin-bottom: 25px;
+        transition: color 0.3s;
     }
 
     form {
@@ -34,6 +36,7 @@
         margin-bottom: 5px;
         font-weight: 600;
         color: #333;
+        transition: color 0.3s;
     }
 
     .form-group input {
@@ -41,7 +44,7 @@
         border: 1px solid #ccc;
         border-radius: 6px;
         font-size: 16px;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, color 0.3s;
     }
 
     .form-group input:focus {
@@ -70,6 +73,45 @@
 
     input[type="submit"]:hover {
         background-color: #0077a3;
+    }
+
+    /* ===== Tema escuro ===== */
+    body.dark-mode .register-container {
+        background-color: #1e1e1e;
+        color: #f5f5f5;
+        box-shadow: 0 4px 15px rgba(255,255,255,0.05);
+    }
+
+    body.dark-mode .register-container h2 {
+        color: #4cc9f0;
+    }
+
+    body.dark-mode .form-group label {
+        color: #ddd;
+    }
+
+    body.dark-mode .form-group input {
+        background-color: #2a2a2a;
+        color: #f5f5f5;
+        border: 1px solid #555;
+    }
+
+    body.dark-mode .form-group input:focus {
+        border-color: #4cc9f0;
+        box-shadow: 0 0 5px rgba(76,201,240,0.3);
+    }
+
+    body.dark-mode input[type="submit"] {
+        background-color: #4cc9f0;
+        color: #000;
+    }
+
+    body.dark-mode input[type="submit"]:hover {
+        background-color: #3a9ed4;
+    }
+
+    body.dark-mode .form-group .errors {
+        color: #ff6b6b;
     }
 
     @media (max-width: 500px) {
