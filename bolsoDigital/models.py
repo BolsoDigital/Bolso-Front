@@ -1,7 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
-from django.db import models
 
 
 class Category(models.Model):
@@ -14,7 +13,7 @@ class Category(models.Model):
         return self.name
 
 
-class User(models.Model):
+class AppUser(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     cpf = models.CharField(max_length=14, unique=True, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
