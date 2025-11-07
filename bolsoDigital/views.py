@@ -1,8 +1,9 @@
 import requests
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Expenses
+from .forms import ExpenseForm
 
 
 @login_required(login_url='login')
@@ -46,4 +47,25 @@ def delete_payment(request, expense_id):
         messages.error(request, f"Ocorreu um erro: {e}")
 
     return redirect('bolsoDigital:expenses_list')
+
+@login_required(login_url='login')
+def edit_payment(request, id):
+    expense = get_object_or_404(Expenses, pk=id)
+    
+    if request.method == 'POST':
+        form = ExpenseForm(request.POST, instance=expense)
+        if form.is_valid():
+            expense = form.save(commit=False)
+            expense.id_user = request.user
+            print("Usuário:", expense.id_user)
+            print("Categoria:", expense.id_category)            
+            expense.save()
+            messages.success(request, "Pagamento atualizado com sucesso!")
+            return redirect('bolsoDigital:expenses_list')
+        else:
+            messages.error(request, f"Erro ao salvar: {form.errors}")
+    else:
+        form = ExpenseForm(instance=expense)
+    
+    return render(request, 'edit_payment.html', {'form': form})
 
