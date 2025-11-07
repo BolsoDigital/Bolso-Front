@@ -190,7 +190,8 @@
         {% endif %}
         {% if user.is_authenticated %}
           <li><a href="{% url 'bolsoDigital:expenses_list' %}" class="nav-link">Pagamentos</a></li>
-          {% endif %}
+          <li><a href="{% url 'bolsoDigital:dashboard' %}" class="nav-link">Dashboard</a></li>
+        {% endif %}
       </ul>
 
       <div class="nav-right">

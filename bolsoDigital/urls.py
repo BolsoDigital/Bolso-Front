@@ -9,5 +9,6 @@ urlpatterns = [
     path('upload-payment/', views.upload_payment, name='upload_payment'),
     path('delete-payment/<int:expense_id>/', views.delete_payment, name='delete_payment'),
     path('edit/<int:id>/', views.edit_payment, name='edit_payment'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 
 ]
