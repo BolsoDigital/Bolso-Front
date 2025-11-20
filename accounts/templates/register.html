@@ -141,6 +141,19 @@
         </div>
 
         <div class="form-group">
+            <label for="{{ user_form.phone_number.id_for_label }}">Telefone:</label>
+            {{ user_form.phone_number }}
+            {% if user_form.phone_number.errors %}
+                <div class="errors">
+                    {% for error in user_form.phone_number.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+      
+
+        <div class="form-group">
             <label for="{{ user_form.password1.id_for_label }}">Senha:</label>
             {{ user_form.password1 }}
             {% if user_form.password1.errors %}
