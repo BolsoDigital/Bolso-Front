@@ -1,6 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
-
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -34,7 +33,15 @@ class Expenses(models.Model):
     id_category = models.ForeignKey(Category, on_delete=models.SET_NULL, db_column='id_category', blank=True, null=True)
     update_at = models.DateTimeField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    id_user = models.ForeignKey(User, on_delete=models.CASCADE, db_column='id_user', blank=True, null=True)
+    
+    id_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        db_column='id_user',
+        blank=True,
+        null=True
+    )
+
     payment_method = models.CharField(max_length=100, blank=True, null=True)
     is_recurring = models.BooleanField(default=False)
 
@@ -46,7 +53,15 @@ class Expenses(models.Model):
 
 
 class Goals(models.Model):
-    id_user = models.ForeignKey(User, on_delete=models.CASCADE, db_column='id_user', blank=True, null=True)
+    
+    id_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        db_column='id_user',
+        blank=True,
+        null=True
+    )
+
     id_category = models.ForeignKey(Category, on_delete=models.SET_NULL, db_column='id_category', blank=True, null=True)
     target_value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     period_start = models.DateField(blank=True, null=True)
@@ -60,7 +75,15 @@ class Goals(models.Model):
 
 
 class Income(models.Model):
-    id_user = models.ForeignKey(User, on_delete=models.CASCADE, db_column='id_user', blank=True, null=True)
+    
+    id_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        db_column='id_user',
+        blank=True,
+        null=True
+    )
+
     value = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     source = models.CharField(max_length=255, blank=True, null=True)
     received_at = models.DateTimeField(blank=True, null=True)
