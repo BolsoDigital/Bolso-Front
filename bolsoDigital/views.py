@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Expenses
 from .forms import ExpenseForm
+from django.db.models import Sum, Avg
+from django.utils import timezone
+from datetime import timedelta
 
 
 @login_required(login_url='login')
@@ -69,3 +72,57 @@ def edit_payment(request, id):
     
     return render(request, 'edit_payment.html', {'form': form})
 
+
+@login_required(login_url='login')
+def dashboard(request):
+    # Pega todos os gastos do usuário logado
+    user_expenses = Expenses.objects.filter(id_user=request.user)
+    
+    # --- 1. Cálculos dos "Cards" ---
+    
+    # Total gasto (geral)
+    total_spent_data = user_expenses.aggregate(total=Sum('value'))
+    total_spent = total_spent_data['total'] or 0
+    
+    # Total gasto nos últimos 30 dias
+    thirty_days_ago = timezone.now() - timedelta(days=30)
+    recent_spent_data = user_expenses.filter(update_at__gte=thirty_days_ago).aggregate(total=Sum('value'))
+    recent_spent = recent_spent_data['total'] or 0
+    
+    # Valor médio por transação
+    average_spent_data = user_expenses.aggregate(avg=Avg('value'))
+    average_spent = average_spent_data['avg'] or 0
+    
+    # Número de transações
+    transaction_count = user_expenses.count()
+    
+    
+    # --- 2. Dados para o Gráfico de Categoria ---
+    
+    # Agrupa os gastos por nome da categoria e soma os valores
+    spending_by_category = user_expenses.values('id_category__name') \
+                                        .annotate(total=Sum('value')) \
+                                        .order_by('-total')
+    
+    # Prepara os dados para o Chart.js
+    # (Converte Decimals para floats para o JavaScript)
+    chart_labels = [item['id_category__name'] for item in spending_by_category]
+    chart_data = [float(item['total']) for item in spending_by_category]
+    
+    
+    # --- 3. Lista de Transações Recentes ---
+    recent_transactions = user_expenses.order_by('-update_at')[:5]
+
+    
+    # --- 4. Envia tudo para o template ---
+    context = {
+        'total_spent': total_spent,
+        'recent_spent': recent_spent,
+        'average_spent': average_spent,
+        'transaction_count': transaction_count,
+        'recent_transactions': recent_transactions,
+        'chart_labels': chart_labels,
+        'chart_data': chart_data,
+    }
+    
+    return render(request, 'dashboard.html', context)
