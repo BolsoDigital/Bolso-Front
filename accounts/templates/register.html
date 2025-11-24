@@ -3,6 +3,9 @@
 {% block title %}Registrar{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
 <style>
     .register-container {
         max-width: 450px;
@@ -45,6 +48,7 @@
         border-radius: 6px;
         font-size: 16px;
         transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, color 0.3s;
+        width: 100%; /* Garante largura total */
     }
 
     .form-group input:focus {
@@ -69,10 +73,16 @@
         font-size: 16px;
         font-weight: 600;
         transition: background-color 0.3s ease;
+        margin-top: 10px;
     }
 
     input[type="submit"]:hover {
         background-color: #0077a3;
+    }
+
+    /* Ajuste específico para o intl-tel-input */
+    .iti {
+        width: 100%;
     }
 
     /* ===== Tema escuro ===== */
@@ -114,6 +124,18 @@
         color: #ff6b6b;
     }
 
+    /* Customização do Dropdown de Países no Modo Escuro */
+    body.dark-mode .iti__country-list {
+        background-color: #2a2a2a;
+        color: #f5f5f5;
+        border: 1px solid #555;
+    }
+    
+    body.dark-mode .iti__country-list .iti__country:hover,
+    body.dark-mode .iti__country-list .iti__country.iti__highlight {
+        background-color: #444;
+    }
+
     @media (max-width: 500px) {
         .register-container {
             margin: 20px;
@@ -125,7 +147,7 @@
 <div class="register-container">
     <h2>Registrar Usuário</h2>
 
-    <form method="post">
+    <form method="post" id="registerForm">
         {% csrf_token %}
 
         <div class="form-group">
@@ -143,6 +165,7 @@
         <div class="form-group">
             <label for="{{ user_form.phone_number.id_for_label }}">Telefone:</label>
             {{ user_form.phone_number }}
+            
             {% if user_form.phone_number.errors %}
                 <div class="errors">
                     {% for error in user_form.phone_number.errors %}
@@ -150,9 +173,9 @@
                     {% endfor %}
                 </div>
             {% endif %}
+            <input type="hidden" name="full_phone" id="full_phone">
         </div>
       
-
         <div class="form-group">
             <label for="{{ user_form.password1.id_for_label }}">Senha:</label>
             {{ user_form.password1 }}
@@ -180,4 +203,34 @@
         <input type="submit" value="Cadastrar">
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const phoneInput = document.querySelector("#id_phone_number");
+        
+        // Inicializa o plugin intl-tel-input
+        const iti = window.intlTelInput(phoneInput, {
+            initialCountry: "br",
+            separateDialCode: true,
+            preferredCountries: ["br", "us", "pt"],
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        //Intercepta o envio do formulário
+        const form = document.querySelector("#registerForm");
+        form.addEventListener('submit', function(e) {
+            // Verifica se o número é válido (opcional, mas recomendado)
+            if (iti.isValidNumber()) {
+                const fullNumber = iti.getNumber();
+                const cleanNumber = fullNumberWithPlus.replace('+', '');
+                phoneInput.value = fullNumber;
+            } else {
+                // Se quiser impedir o envio caso o número seja inválido:
+                e.preventDefault();
+                alert("Número de telefone inválido");
+            }
+        });
+    });
+</script>
 {% endblock %}
